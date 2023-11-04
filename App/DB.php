@@ -5,7 +5,7 @@ namespace App;
 
 use Closure;
 
-class XDB
+class DB
 {
     private string $table;
 
@@ -16,13 +16,13 @@ class XDB
     private array $conditions = [];
 
 
-    public static function table( $table ): XDB
+    public static function table( $table ): DB
     {
-        $xdb = new self;
+        $db = new self;
 
-        $xdb -> setTable( $table );
+        $db -> setTable( $table );
 
-        return $xdb;
+        return $db;
     }
 
     public function getTable(): string
@@ -30,7 +30,7 @@ class XDB
         return $this -> table;
     }
 
-    public function setTable( string $table ): XDB
+    public function setTable( string $table ): DB
     {
         $this -> table = $table;
 
@@ -62,14 +62,14 @@ class XDB
     }
 
 
-    public function select( $columns = [ '*' ] ): XDB
+    public function select( $columns = [ '*' ] ): DB
     {
         $this -> columns = is_array( $columns ) ? $columns : func_get_args();
 
         return $this;
     }
 
-    public function orderBy( string $column , $direction = 'ASC' ): XDB
+    public function orderBy( string $column , $direction = 'ASC' ): DB
     {
         $this -> orders[] = [ 'column' => $column, 'direction' => $direction ];
 
@@ -77,7 +77,7 @@ class XDB
     }
 
 
-    public function where( $column , $operator = null , $value = null , $boolean = 'and' ): XDB
+    public function where( $column , $operator = null , $value = null , $boolean = 'and' ): DB
     {
         $condition = [ 'boolean' => $boolean , 'column' => $column , 'operator' => $operator , 'value' => $value ];
 
@@ -88,42 +88,42 @@ class XDB
         return $this;
     }
 
-    public function orWhere( $column , $operator = null , $value = null ): XDB
+    public function orWhere( $column , $operator = null , $value = null ): DB
     {
         $this -> where( $column , $operator , $value , 'or' );
 
         return $this;
     }
 
-    public function whereNull( $column , $boolean = 'and' ): XDB
+    public function whereNull( $column , $boolean = 'and' ): DB
     {
         $this -> where( $column , null , null , $boolean );
 
         return $this;
     }
 
-    public function orWhereNull( $column ): XDB
+    public function orWhereNull( $column ): DB
     {
         $this -> whereNull( $column , 'or' );
 
         return $this;
     }
 
-    public function whereNotNull( $column , $boolean = 'and' ): XDB
+    public function whereNotNull( $column , $boolean = 'and' ): DB
     {
         $this -> where( $column , 'not null' , null , $boolean );
 
         return $this;
     }
 
-    public function orWhereNotNull( $column ): XDB
+    public function orWhereNotNull( $column ): DB
     {
         $this -> whereNotNull( $column , 'or' );
 
         return $this;
     }
 
-    public function whereNested( Closure $callback ): XDB
+    public function whereNested( Closure $callback ): DB
     {
         call_user_func( $callback , $query = new static() );
 

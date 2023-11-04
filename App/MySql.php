@@ -5,11 +5,11 @@ namespace App;
 
 class MySql
 {
-    private XDB $xdb;
+    private DB $db;
 
-    public function __construct( XDB $xdb )
+    public function __construct( DB $db )
     {
-        $this -> xdb = $xdb;
+        $this -> db = $db;
     }
 
 
@@ -20,12 +20,12 @@ class MySql
 
     private function generateSelect(): string
     {
-        return "SELECT " . implode( ', ' , $this -> xdb -> getColumns() ) . " FROM {$this -> xdb -> getTable()}";
+        return "SELECT " . implode( ', ' , $this -> db -> getColumns() ) . " FROM {$this -> db -> getTable()}";
     }
 
     private function generateOrder(): string
     {
-        $orders = $this -> xdb -> getOrders();
+        $orders = $this -> db -> getOrders();
 
         $order = '';
 
@@ -46,7 +46,7 @@ class MySql
 
     private function generateWhere(): string
     {
-        $conditions = $this -> xdb -> getConditions();
+        $conditions = $this -> db -> getConditions();
 
         $where = $this -> addWhere( $conditions );
 
