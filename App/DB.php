@@ -127,7 +127,7 @@ class DB
     {
         call_user_func( $callback , $query = new static() );
 
-        return $this;
+        return $query;
     }
 
 
