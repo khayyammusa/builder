@@ -6,12 +6,14 @@ spl_autoload_register( function( $class ) {
 
 use App\DB;
 
+$maxCount = 100;
+
 $query = DB ::table( 'users' )
             -> where( 'gender' , 'm' )
             -> whereNotNull( 'name' )
-            -> orWhere( function( $query )
+            -> orWhere( function( $query ) use ( $maxCount )
             {
-                return $query -> where( 'author' , null ) -> where( 'read_count' , '<' , 100 );
+                return $query -> where( 'author' , null ) -> where( 'read_count' , '<' , $maxCount );
             } )
             -> select( 'name' , 'surname' , 'email' )
             -> orderBy( 'name' )
